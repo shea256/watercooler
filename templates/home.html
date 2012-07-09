@@ -1,0 +1,92 @@
+<html>
+<title>Welcome to BroDate</title>
+  <head>
+  <style>
+/*  img { height: 30px; width: 30px; padding: 1px;}*/
+  </style>
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.4.min.js"></script>
+  <script type="text/javascript" src="/Users/minqi/projects/kiwi/videochat/templates/javascript/cookies.js"></script>
+  <script type="text/javascript">
+
+ function setCookie(name,value,days) {
+   	if (days) {
+       var date = new Date();
+       date.setTime(date.getTime()+(days*24*60*60*1000));
+       var expires = "; expires="+date.toGMTString();
+   	}
+   	else var expires = "";
+   	document.cookie = name+"="+value+expires+"; path=/";
+ }
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+  function launch(){
+	jQuery.get('landing/', { token : response.authResponse.accessToken } );
+ 	window.location="landing/";
+  }
+
+  function isLoggedOn(){
+    FB.getLoginStatus(function(response) {
+        if(!response.authResponse) 
+		{
+        
+        } else { launch(); }
+  });}
+
+  function login(){
+    FB.getLoginStatus(function(response) {
+        if(!response.authResponse) 
+		{
+         	FB.login(function(response) {
+           		if(response.authResponse) 
+				{
+					setCookie('login_success', 'me', 1);
+            		FB.api('/me', function(meresponse) {
+                		alert('Your name is ' + meresponse.name);});
+            		launch();
+            	} 
+				else { alert('y u no auth?'); } 
+           }, {scope:'publish_actions,friends_interests'});
+            
+        } else { launch(); }
+  });}
+  </script>
+
+  </head>
+  <body>
+  <center><div style="display: block; margin-left: auto; margin-right: auto; margin-top: 25%"><img src="static/logo.png" width="510" height="115"></img></div></center>
+  <div id="fb-root"></div>
+  <script src="//connect.facebook.net/en_US/all.js"></script> 
+  <script>
+    FB.init({
+      appId  : '273290102707901',
+      status : true, // check login status
+      cookie : true, // enable cookies to allow the server to access the session
+      xfbml  : true, // parse XFBML
+      oauth  : true, // enable OAuth 2.0
+    });
+	// isLoggedOn();
+	// jump to landing if already authenticated
+	if ( getCookie('login_success') )
+	{
+		deleteCookie('login_success')
+		launch();
+	}
+  </script>
+ <p/>
+<div id="show_faces_link">
+  <center><a href="#" onclick="login(); return false;"> <div class="fb-login-button" data-perms="email,user_checkins">
+    </div></a></center>
+</div>
+  <div id="faces" style="width:760px"></div>
+  </body>
+</html>

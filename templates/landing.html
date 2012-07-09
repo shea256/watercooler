@@ -1,0 +1,25 @@
+<html>
+<head>
+    <title>Find your best bro</title>
+</head>
+<body>
+    <div style="position:absolute; left-margin:auto; right-margin:auto"><h1>What interests you?</h1>
+
+    {% if errors %}
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+	<form action="/meeting/" method="get">
+	<input type="checkbox" name="startup" value="startup" /> Startups <br/>
+	<input type="checkbox" name="mandate" value="mandate" /> Man dates <br/>
+	<input type="checkbox" name="princeton" value="princeton"> Princeton <br/>
+	<input type="hidden" name="chat_id" value="{{ chat_id }}">
+	</br>
+	<input type="submit" value="Find bro">
+	</form></div>
+</body>
+</html>
